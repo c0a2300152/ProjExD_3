@@ -24,6 +24,15 @@ def check_bound(obj_rct: pg.Rect) -> tuple[bool, bool]:
         tate = False
     return yoko, tate
 
+class Score:
+    def __init__(self):
+        self.font = pg.font.SysFont("hgp創英角ﾎﾟｯﾌﾟ体", 30)
+        self.score = 0
+        self.center = [100, HEIGHT - 50] # スコア表示位置
+
+    def update(self, screen: pg.Surface):
+        self.img = self.font.render(f"スコア: {self.score}", True, (0, 0, 255))
+        screen.blit(self.img, self.center)
 
 class Bird:
     """
@@ -148,6 +157,7 @@ def main():
     bird = Bird((300, 200))
     bomb = Bomb((255, 0, 0), 10)
     beam = None  # Beam(bird)  # ビームインスタンス生成
+    score = Score() #スコアインスタンス生成
     # bomb2 = Bomb((0, 0, 255), 20)
     bombs = [Bomb((255, 0, 0), 10) for _ in range(NUM_OF_BOMBS)]#5この爆弾を生成するリスト(内包表記)
        
@@ -169,8 +179,8 @@ def main():
                     # ゲームオーバー時に，こうかとん画像を切り替え，1秒間表示させる
                     bird.change_img(8, screen)
                     fonto = pg.font.Font(None, 80)
-                    #txt = fonto.render("Game Over", True, (255, 0, 0))
-                    #screen.blit(txt, [WIDTH//2-150, HEIGHT//2])
+                    txt = fonto.render("Game Over", True, (255, 0, 0))
+                    screen.blit(txt, [WIDTH//2-150, HEIGHT//2])
                     pg.display.update()
                     time.sleep(1)
                     return
@@ -182,7 +192,9 @@ def main():
                     bombs[i] = None
                     beam = None
                     bird.change_img(6, screen)
+                    score.score += 1#爆弾撃ち落としたらプラス1点
                     pg.display.update()
+        score.update(screen)
 
         key_lst = pg.key.get_pressed()
         bird.update(key_lst, screen)
