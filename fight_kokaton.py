@@ -30,6 +30,7 @@ class Score:
         self.score = 0
         self.center = [100, HEIGHT - 50] # スコア表示位置
 
+
     def update(self, screen: pg.Surface):
         self.img = self.font.render(f"スコア: {self.score}", True, (0, 0, 255))
         screen.blit(self.img, self.center)
@@ -66,6 +67,7 @@ class Bird:
         self.rct: pg.Rect = self.img.get_rect()
         self.rct.center = xy
 
+
     def change_img(self, num: int, screen: pg.Surface):
         """
         こうかとん画像を切り替え，画面に転送する
@@ -74,6 +76,7 @@ class Bird:
         """
         self.img = pg.transform.rotozoom(pg.image.load(f"fig/{num}.png"), 0, 0.9)
         screen.blit(self.img, self.rct)
+
 
     def update(self, key_lst: list[bool], screen: pg.Surface):
         """
@@ -109,6 +112,7 @@ class Beam:
         self.rct.left = bird.rct.right  # こうかとんの右座標
         self.vx, self.vy = +5, 0
 
+
     def update(self, screen: pg.Surface):
         """
         ビームを速度ベクトルself.vx, self.vyに基づき移動させる
@@ -136,6 +140,7 @@ class Bomb:
         self.rct.center = random.randint(0, WIDTH), random.randint(0, HEIGHT)
         self.vx, self.vy = +5, +5
 
+
     def update(self, screen: pg.Surface):
         """
         爆弾を速度ベクトルself.vx, self.vyに基づき移動させる
@@ -161,7 +166,6 @@ def main():
     score = Score() #スコアインスタンス生成
     # bomb2 = Bomb((0, 0, 255), 20)
     bombs = [Bomb((255, 0, 0), 10) for _ in range(NUM_OF_BOMBS)]#5この爆弾を生成するリスト(内包表記)
-    
     clock = pg.time.Clock()
     tmr = 0
     kazu = 0
