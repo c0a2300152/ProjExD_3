@@ -156,20 +156,25 @@ def main():
     bg_img = pg.image.load("fig/pg_bg.jpg")
     bird = Bird((300, 200))
     bomb = Bomb((255, 0, 0), 10)
-    beam = None  # Beam(bird)  # ビームインスタンス生成
+    beam = None  # ビームインスタンス生成
+    beams = []  # ビームリスト
     score = Score() #スコアインスタンス生成
     # bomb2 = Bomb((0, 0, 255), 20)
     bombs = [Bomb((255, 0, 0), 10) for _ in range(NUM_OF_BOMBS)]#5この爆弾を生成するリスト(内包表記)
-       
+    
     clock = pg.time.Clock()
     tmr = 0
+    kazu = 0
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 return
             if event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
                 # スペースキー押下でBeamクラスのインスタンス生成
-                beam = Beam(bird)            
+                beam = Beam(bird)
+                beams.append(beam)
+                kazu += 1
+                #beams = [beam for beam in beams if beam is not None]#none出ないものだけをリストに入れる
         screen.blit(bg_img, [0, 0])
         
 
@@ -206,9 +211,26 @@ def main():
         if beam is not None:
             beam.update(screen)
         # bomb2.update(screen)
+
+        # ビームの更新と描画
+        for beam in beams:
+            beam.update(screen)
+            if beam.rct.bottom < 0:
+                beams.remove(beam)
+
+        # beamsリストの個数が増えたらビームを発射する
+        if len(beams) > 0 + kazu:
+            beam = Beam(bird)
+            #beams.append(beam)
+
+
         pg.display.update()
         tmr += 1
         clock.tick(50)
+
+        
+
+        score.update(screen)#スコア更新
 
 
 if __name__ == "__main__":
