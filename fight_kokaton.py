@@ -223,7 +223,7 @@ def main():
                 beams.remove(beam)
 
         # beamsリストの個数が増えたらビームを発射する
-        if len(beams) > 0 + kazu:
+        if len(beams) > kazu:
             beam = Beam(bird)
             #beams.append(beam)
 
